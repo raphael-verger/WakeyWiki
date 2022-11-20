@@ -49,6 +49,31 @@ def get_transcription_result_url(url):
         data = poll(transcribe_id)
         if data['status'] == 'completed':
             return data, None
+        time.sleep(2)
+
+
+def save_transcript(url):
+    data, error = get_transcription_result_url(url)
+    if data:
+        return data['text']
+
+
+    transcript_response = requests.post(transcript_endpoint, json=transcript_request, headers=headers)
+    return transcript_response.json()['id']
+
+
+def poll(transcript_id):
+    polling_endpoint = transcript_endpoint + '/' + transcript_id
+    polling_response = requests.get(polling_endpoint, headers=headers)
+    return polling_response.json()
+
+
+def get_transcription_result_url(url):
+    transcribe_id = transcribe(url)
+    while True:
+        data = poll(transcribe_id)
+        if data['status'] == 'completed':
+            return data, None
         elif data['status'] == 'error':
             return data, data['error']
         time.sleep(2)
