@@ -1,3 +1,4 @@
+# part of the api and recording file code was taken from an external source and later modtified for our needs
 import numpy as np
 import cv2
 import dlib
@@ -9,7 +10,7 @@ from API import *
 from recording import record
 from playsound import playsound
 
-blink_threshold = 6.5
+blink_threshold = 6.7
 sleep_threshold = 5
 tired_threshold = 20
 
@@ -100,8 +101,35 @@ def get_blinking_ratio(eye_points, facial_landmarks):
   else:
     ratio = (hor_line_length / ver_line_length)
   return ratio
+def get_average_two_eyes(landmarks):
+    left_eye_ratio = get_blinking_ratio([36,37,38,39,40,41],landmarks)
+    right_eye_ratio = get_blinking_ratio([42,43,44,45,46,47],landmarks)
+    blinking_ratio = (left_eye_ratio+right_eye_ratio)/2
+    return blinking_ratio
+def measure_average_blink_frequency(blinking_ratio):
+    print("messuring average blink frequency, get ready in 5")
+    time.sleep(1)
+    ("in 4")
+    time.sleep(1)
+    ("in 3")
+    time.sleep(1)
+    ("in 2")
+    time.sleep(1)
+    ("in 1")
+    time.sleep(1)
+    ("it starts")
+    start = time.time()
+    counter = 0
+    
+    while( time.time() - start) <=60.0:
+      if blinking_ratio > blink_threshold:
+        counter+=1
+    return counter/60
+      
+      
+        
+      
 
- 
 while(True):
 
       if pause:
@@ -118,9 +146,10 @@ while(True):
         left_eye_ratio = get_blinking_ratio([36,37,38,39,40,41],landmarks)
         right_eye_ratio = get_blinking_ratio([42,43,44,45,46,47],landmarks)
         blinking_ratio = (left_eye_ratio+right_eye_ratio)/2
+        #print (measure_average_blink_frequency())
 
         if blinking_ratio > blink_threshold:
-          time.sleep(0.1)
+          time.sleep(0.2)
           cv2.putText(frame,"BLINKING", (100,120) , font, 3, (0,0,255))
           blink_counter += 1
           print(blink_counter)
