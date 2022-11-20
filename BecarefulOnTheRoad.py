@@ -8,6 +8,7 @@ import requests
 from API import *
 from recording import record
 from playsound import playsound
+
 blink_threshold = 6.5
 sleep_threshold = 5
 tired_threshold = 20
@@ -28,30 +29,33 @@ def respond():
   time.sleep(5)
   count = 0
   if 'yes' in ans.lower():
-    print(2)
-    playsound("C:\\Users\\brrzh\\Downloads\\McGill 6.mp3")
+    playsound("C:\\Users\\brrzh\\Downloads\\FallingAsleepYes.mp3")
   else:
-    playsound("C:\\Users\\brrzh\\Downloads\\McGill University - Biochemistry 21 (1).mp3")
+    playsound("C:\\Users\\brrzh\\Downloads\\FallingAsleepNo.mp3")
 
 
 # functions for all tiredness states of the driver
 def is_falling_asleep():
   print("You are falling alseep! Wake up!")
   playsound("C:\\Users\\brrzh\\Downloads\\mixkit-bell-notification-933.mp3") #alarm
-  playsound("C:\\Users\\brrzh\\Downloads\\McGill University - Biochemistry 17.mp3")
+  playsound("C:\\Users\\brrzh\\Downloads\\FallingAsleep.mp3")
   respond()
-  user_interface("You are falling alseep! Wake up!")
+  #user_interface("You are falling alseep! Wake up!")
+
 def is_sleepy():
   print("Did you fall asleep?")
-  playsound("C:\\Users\\brrzh\\Downloads\\McGill University - Biochemistry 12.mp3")
+  playsound("C:\\Users\\brrzh\\Downloads\\IsTired.mp3")
   respond()
-  user_interface("Did you fall asleep?")
+  #user_interface("Did you fall asleep?")
+
 def is_tired():
   print("You look tired, maybe get some rest")
-  user_interface("You look tired, maybe get some rest")
+  #user_interface("You look tired, maybe get some rest")
+
 def closeWindow(window):
   window.destroy()
   print("Close window")
+
 def pauseDetection(window):
   window.destroy()
   pause=True
@@ -63,23 +67,11 @@ def user_interface(feedback):
   window.title("123Don'tSleep")
   message = tk.Label(window, text=feedback, font=("Helvetica", 20))
   message.place(x=100,y=250)
-  OK = tk.Button(window, text="I'm okay", command = window.destroy, fg="red", font="Verdana 14 underline", bd=2, bg="light blue", relief="groove")
+  OK = tk.Button(window, text="I'm okay", command = closeWindow(window), fg="red", font="Verdana 14 underline", bd=2, bg="light blue", relief="groove")
   OK.place(x=600,y=400)
-  pause = tk.Button(window, text="Pause detection for 1h", command = window.destroy, fg="red", font="Verdana 14 underline", bd=2, bg="light blue", relief="groove")
+  pause = tk.Button(window, text="Pause detection for 1h", command = pauseDetection(window), fg="red", font="Verdana 14 underline", bd=2, bg="light blue", relief="groove")
   pause.place(x=200,y=400)
   window.mainloop()
-
-#def Label(self):
-  #self.backgroundImage=tk.PhotoImage(file=)
-  
-  
-
-
-# User interface widgets
-#title = ttk.Label(parent, text='123')
-
-
-
   
 # define cv2 objects
 vid = cv2.VideoCapture(0)
@@ -109,25 +101,6 @@ def get_blinking_ratio(eye_points, facial_landmarks):
     ratio = (hor_line_length / ver_line_length)
   return ratio
 
-
-# Setup the user interface
-#userInterface = np.zeros((471,636,3)) + 255
-#userInterface = cv2.rectangle(userInterface, (0,0), (1000,1000), (200,200,200), -1) #background
-#userInterface = cv2.rectangle(userInterface, (40,110), (600,330), (150,100,0), -1)
-#userInterface = cv2.rectangle(userInterface, (40,10), (220,55), (0,0,0), 2)
-#userInterface = cv2.rectangle(userInterface, (275,401), (370,445), colors[2], -1)
-#userInterface = cv2.rectangle(userInterface, (390,401), (485,445), colors[2], -1)
-#userInterface = cv2.rectangle(userInterface, (505,401), (600,445), colors[3], -1)
-
-#cv2.putText(userInterface, "123 Don't Sleep!", (52, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2, cv2.LINE_AA)
-#cv2.putText(userInterface, "Pause", (295, 425), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-#cv2.putText(userInterface, "Play", (420, 425), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-#cv2.putText(userInterface, "Terminate", (515, 425), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2, cv2.LINE_AA)
-
-
-
-#cv2.namedWindow('UI', cv2.WINDOW_AUTOSIZE)
-
  
 while(True):
 
@@ -147,8 +120,8 @@ while(True):
         blinking_ratio = (left_eye_ratio+right_eye_ratio)/2
 
         if blinking_ratio > blink_threshold:
-          time.sleep(0.13)
-          cv2.putText(frame,"BLINKING", (50,150) , font, 7, (255,0,0))
+          time.sleep(0.1)
+          cv2.putText(frame,"BLINKING", (100,120) , font, 3, (0,0,255))
           blink_counter += 1
           print(blink_counter)
           if(blink_counter == 10):
