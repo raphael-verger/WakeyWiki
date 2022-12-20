@@ -4,6 +4,7 @@
 * Applied our knowledge of OpenCV and Dlib (Python libraries) to use facial recognition to track the user’s eyes and detect blinking
 * Integrated voice recognition to our system to interact with the driver
 * Earned the 3rd place of the challenge
+* Nov. 2022
 
 ## Demo
 * Link to a quick demo: 
